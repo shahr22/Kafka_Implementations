@@ -1,0 +1,118 @@
+Description:  Kafka Clusters
+
+Parameters:
+  EnvironmentName:
+    Description: An environment name that is prefixed to resource names
+    Type: String
+    Default: KafkaVPC
+
+  VpcCIDR:
+    Description: Please enter the IP range (CIDR notation) for this VPC
+    Type: String
+    Default: 10.192.0.0/16
+
+  PublicSubnet1CIDR:
+    Description: Please enter the IP range (CIDR notation) for the public subnet in the first Availability Zone. In this version, we only use 1 subnet.
+    Type: String
+    Default: 10.192.10.0/24
+
+  AMI:
+    Description: Please enter ubuntu AMI
+    Type: String
+    Default: ami-052efd3df9dad4825
+
+  KeyPair:
+    Description: Key Pair for EC2
+    Type: String
+    Default: testkp
+
+Resources:
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref VpcCIDR
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: !Ref EnvironmentName
+
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: !Ref EnvironmentName
+
+  InternetGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      InternetGatewayId: !Ref InternetGateway
+      VpcId: !Ref VPC
+
+  PublicSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      AvailabilityZone: !Select [ 0, !GetAZs '' ]
+      CidrBlock: !Ref PublicSubnet1CIDR
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName} Public Subnet (AZ1)
+
+  PublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName} Public Routes
+
+  DefaultPublicRoute:
+    Type: AWS::EC2::Route
+    DependsOn: InternetGatewayAttachment
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+
+  PublicSubnet1RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      SubnetId: !Ref PublicSubnet1
+
+  KafkaSecurityGroup1:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: SG for Kafka1
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: '0'
+          ToPort: '65535'
+          CidrIp: '0.0.0.0/0'
+      VpcId: !Ref VPC
+
+  Kafka1:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !Ref AMI
+      KeyName: !Ref KeyPair
+      InstanceType: t2.medium
+      SubnetId: !Ref PublicSubnet1
+      SecurityGroupIds:
+        - !Ref KafkaSecurityGroup1
+      Tags:
+       - Key: Name
+         Value: Kafka1
+      UserData:
+        Fn::Base64: |
+          #!/bin/bash
+          apt-get update
+          apt install -y default-jdk
+          wget https://downloads.apache.org/kafka/3.2.1/kafka_2.13-3.2.1.tgz
+          tar -xzf kafka_2.13-3.2.1.tgz
+          kafka_2.13-3.2.1/bin/zookeeper-server-start.sh -daemon kafka_2.13-3.2.1/config/zookeeper.properties
+          sleep 5s
+          kafka_2.13-3.2.1/bin/kafka-server-start.sh -daemon kafka_2.13-3.2.1/config/server.properties

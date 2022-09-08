@@ -1,0 +1,178 @@
+{
+  "version": "21.0.0",
+  "artifacts": {
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    },
+    "CdkKafkaStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "CdkKafkaStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "CdkKafkaStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "CdkKafkaStack.template.json",
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/d0a7544407bb5e46063f3b20196c8cde4a8df2ec5e3d4df1558c6ebd80b77a87.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "CdkKafkaStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "CdkKafkaStack.assets"
+      ],
+      "metadata": {
+        "/CdkKafkaStack/kafka_vpc/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "kafkavpcF4A7E5D6"
+          }
+        ],
+        "/CdkKafkaStack/kafka_vpc/PublicSNSubnet1/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "kafkavpcPublicSNSubnet1Subnet7B9DF207"
+          }
+        ],
+        "/CdkKafkaStack/kafka_vpc/PublicSNSubnet1/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "kafkavpcPublicSNSubnet1RouteTableB9A9591D"
+          }
+        ],
+        "/CdkKafkaStack/kafka_vpc/PublicSNSubnet1/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "kafkavpcPublicSNSubnet1RouteTableAssociation6C4A6809"
+          }
+        ],
+        "/CdkKafkaStack/kafka_vpc/PublicSNSubnet1/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "kafkavpcPublicSNSubnet1DefaultRoute0F5A07E0"
+          }
+        ],
+        "/CdkKafkaStack/kafka_vpc/PublicSNSubnet1/EIP": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "kafkavpcPublicSNSubnet1EIP288F8404"
+          }
+        ],
+        "/CdkKafkaStack/kafka_vpc/PublicSNSubnet1/NATGateway": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "kafkavpcPublicSNSubnet1NATGatewayD2F44122"
+          }
+        ],
+        "/CdkKafkaStack/kafka_vpc/PrivateSNSubnet1/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "kafkavpcPrivateSNSubnet1Subnet6B1AFF4B"
+          }
+        ],
+        "/CdkKafkaStack/kafka_vpc/PrivateSNSubnet1/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "kafkavpcPrivateSNSubnet1RouteTable655FDC14"
+          }
+        ],
+        "/CdkKafkaStack/kafka_vpc/PrivateSNSubnet1/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "kafkavpcPrivateSNSubnet1RouteTableAssociation32B6414D"
+          }
+        ],
+        "/CdkKafkaStack/kafka_vpc/PrivateSNSubnet1/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "kafkavpcPrivateSNSubnet1DefaultRoute1F00884B"
+          }
+        ],
+        "/CdkKafkaStack/kafka_vpc/IGW": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "kafkavpcIGW4DFB5C55"
+          }
+        ],
+        "/CdkKafkaStack/kafka_vpc/VPCGW": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "kafkavpcVPCGW0B5F8FCB"
+          }
+        ],
+        "/CdkKafkaStack/KafkaSG/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KafkaSG73EE33C7"
+          }
+        ],
+        "/CdkKafkaStack/Kafka/InstanceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KafkaInstanceRole8689BD38"
+          }
+        ],
+        "/CdkKafkaStack/Kafka/InstanceProfile": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KafkaInstanceProfileB3242217"
+          }
+        ],
+        "/CdkKafkaStack/Kafka/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KafkaDE2CE4FA"
+          }
+        ],
+        "/CdkKafkaStack/SsmParameterValue:--aws--service--ami-amazon-linux-latest--amzn2-ami-hvm-x86_64-gp2:C96584B6-F00A-464E-AD19-53AFF4B05118.Parameter": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SsmParameterValueawsserviceamiamazonlinuxlatestamzn2amihvmx8664gp2C96584B6F00A464EAD1953AFF4B05118Parameter"
+          }
+        ],
+        "/CdkKafkaStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/CdkKafkaStack/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable"
+          }
+        ],
+        "/CdkKafkaStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/CdkKafkaStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "CdkKafkaStack"
+    }
+  }
+}
