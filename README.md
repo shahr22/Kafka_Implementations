@@ -1,3 +1,3 @@
-# VR_Accelerator_Program_Implementations
+# VR Accelerator Program Implementations
 
 Kafka Implementations
