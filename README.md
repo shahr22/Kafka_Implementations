@@ -1,3 +1,3 @@
-# Kafka_Implementations
+# VR_Accelerator_Program_Implementations
 
-This version launches a single instance Kafka server into a public subnet via CDK/Terraform/Cloudformation.
+Kafka Implementations
